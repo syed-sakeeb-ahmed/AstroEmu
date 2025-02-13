@@ -1,0 +1,33 @@
+.baseHeight {
+    width: auto !important;
+    object-fit: contain;
+}
+
+.modifiedHeight
+{
+    height: 100% !important;
+    object-fit: contain;
+}
+
+.widthAuto {
+    width: auto !important;
+}
+
+.red {
+    color: red;
+}
+
+.blue {
+    color: blue;
+}
+
+.imgbox {
+    display: grid;
+    height: 100%;
+}
+
+.center-fit {
+    max-width: 100%;
+    height: auto !important;
+    margin: auto;
+}
