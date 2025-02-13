@@ -33,7 +33,7 @@ const SelectPageBar = () => {
             }
             zip.generateAsync({type:"blob"})
 .then(function (blob) {
-    saveAs(blob, "backup.zip");
+    saveAs(blob);
 })
             /*game = file[0].gameFile
             console.log("Created file object url")

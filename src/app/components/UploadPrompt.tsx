@@ -34,6 +34,11 @@ const style = {
 const UploadPrompt = ({isTitleErrorState, fileRef, isOpen, handleClose, textRef, setDisabled, disabled}) => {
     
     
+    const getExtension = (filename : string) => {
+        const ext = filename.slice(-4);
+        return ext;
+    }
+    
     const getPlatform = (fileName : string) => {
         if (fileName.slice(-3).localeCompare("nes") == 0)
         {
@@ -65,9 +70,11 @@ const UploadPrompt = ({isTitleErrorState, fileRef, isOpen, handleClose, textRef,
             }
         isTitleErrorState.setIsTitleError(false)
         const platform = getPlatform(userUploadedFile.name)
+        const extension = getExtension(userUploadedFile.name)
         handleClose(); //Close Prompt and Reset Refs
         console.log(`Adding ${userUploadedFile.name} to database with title ${userDefinedTitle}...`)
-        await db.gameData.add({title: userDefinedTitle, platform: platform, isPreloaded: 0, saveFile: null, gameFile: userUploadedFile})
+        const userUploadedFileArrayBuffer = await userUploadedFile.arrayBuffer()
+        await db.gameData.add({title: userDefinedTitle, platform: platform, isPreloaded: 0, saveFile: null, gameFile: userUploadedFileArrayBuffer, extension: extension})
     }
     
 

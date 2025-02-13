@@ -44,7 +44,7 @@ const UploadButton = () => {
                 //Check whether maximum upload limit of 3 has been reached
                 const noPreloadedArray = await db.gameData.where('isPreloaded').equals(0).toArray()
                 console.log("This is preloadedArray length: " + noPreloadedArray.length)
-                if (noPreloadedArray.length === 3)
+                if (noPreloadedArray.length >= 3)
                 {
                     displayUploadError("Maximum upload limit of 3 has been reached")
                 }

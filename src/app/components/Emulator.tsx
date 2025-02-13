@@ -140,6 +140,12 @@ export default function Emulator ({gameID, platform}) {
             gameFile = getPreloadedGameFilePath(gameDBObject.title, gameDBObject.platform)
             gameFile = addExtension(gameFile, gameDBObject.platform)
         }
+
+        if (gameDBObject.isPreloaded === 0)
+        {
+            gameFile = new Blob([gameFile], { type: 'application/octet-stream' })
+            console.log("This is the newly made file: ")
+        }
        
         const machineConfiguration = await Nostalgist.launch({
             element: document.querySelector('#emulator-canvas'),

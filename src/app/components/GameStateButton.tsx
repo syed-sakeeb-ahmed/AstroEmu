@@ -76,9 +76,11 @@ const GameStateButton = ({gameID, emulationController, buttonVariant, style} : {
         if (emulationController)
         {
             console.log(emulationController.current)
-            const state = await emulationController.current.saveState();
+            const saveFile = await emulationController.current.saveState();
+            const arrayBufferState = await saveFile.state.arrayBuffer()
+            
             db.gameData.update(gameID, {
-                "saveFile": state,
+                "saveFile": arrayBufferState,
             });
         }
         
@@ -116,12 +118,14 @@ const GameStateButton = ({gameID, emulationController, buttonVariant, style} : {
     const handleLoad : () => Promise<void> = async () => {
         let isLoadSuccess = false;
         
-            const saveFile = await getSaveFileFromDatabase();
+            const saveFileBuffer = await getSaveFileFromDatabase();
+            const saveFileState = new Blob([saveFileBuffer], { type: "application/octet-stream" })
+            console.log(saveFileState)
             //console.log("This is savefile: " + saveFile.state)
-            if (saveFile !== null)
+            if (saveFileBuffer !== null)
             {
                 //console.log(saveFile.title)
-                await emulationController.current.loadState(saveFile.state);
+                await emulationController.current.loadState(saveFileState);
                 startCooldownTimer(1000);
                 isLoadSuccess = true;
             }

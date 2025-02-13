@@ -52,9 +52,11 @@ const MenuButton = ({emulationController, gameID, menuToggle}) => {
             console.log("Save file does not exist")
             return
         }
-        const state = saveFile.state
+        const saveArrayBuffer = gameObject.saveFile
+        const blob = new Blob([saveArrayBuffer], { type: "application/octet-stream" })
+        //const state = saveFile.state
         //console.log(`${gameObject.title}`)
-        saveAs(state, `${gameObject.title}.save`)
+        saveAs(blob, `${gameObject.title}.save`)
       }
 
       const handleUpload = async (e) => {
@@ -68,7 +70,8 @@ const MenuButton = ({emulationController, gameID, menuToggle}) => {
 
             if (isValid === true)
             {
-                await db.gameData.update(gameID, {saveFile: {state: uploadedFile, thumbnail: {}}});
+                const uploadedFileArrayBuffer = await uploadedFile.arrayBuffer()
+                await db.gameData.update(gameID, {saveFile: uploadedFileArrayBuffer});
                 setMessage('Success')
             }
             else
