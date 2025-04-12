@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { useRef } from 'react';
 import {db} from '../db'
 import ErrorPrompt from './ErrorPrompt';
+import {Tooltip} from '@mui/material';
 
 const UploadButton = () => {
 
@@ -87,9 +88,11 @@ const UploadButton = () => {
     }
     return (
         <div>
+            <Tooltip title={"Upload your Famicom and Super Famicom roms"}>
             <Button component="label" variant="contained" color="secondary" >Upload Game
             <input onChange={handleUpload} multiple={false} type='file'hidden/>
             </Button>
+            </Tooltip>
             <UploadPrompt isTitleErrorState={{isTitleError, setIsTitleError}} fileRef={fileRef} disabled={disabled} setDisabled={setDisabled} textRef={textRef} isOpen={isOpen} handleClose={handleClose}/>
             <ErrorPrompt handleClose={handleErrorClose} isOpen={errorIsOpen} message={errorMessage}/>
         </div>

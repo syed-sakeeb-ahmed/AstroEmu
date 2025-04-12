@@ -20,6 +20,9 @@ import ControlBar from './ControlBar';
 import { useSearchParams } from 'next/navigation'
 import { Suspense } from 'react'
 import { OverlayContext } from '../OverlayContext';
+import Modal from '@mui/material/Modal';
+import Backdrop from '@mui/material/Backdrop';
+import Fade from '@mui/material/Fade';
 import '../styles/canvas.css'
 
 import {db} from '../db'
@@ -52,6 +55,12 @@ export default function Emulator ({gameID, platform}) {
     const emulationControllerRef = useRef(null)
     const [menuIsOpen, setMenuIsOpen] = useState(false)
 
+    const router = useRouter();
+    
+    const [open, setOpen] = useState(true)
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
+
     const menuToggle = {
         menuIsOpen,
         setMenuIsOpen
@@ -63,6 +72,15 @@ export default function Emulator ({gameID, platform}) {
         const gameFilePath = getPreloadedGameFilePath(gameDataObject.title, gameDataObject.platform);
         const gameFile = await fetch(gameFilePath);
         return gameFile;
+    }
+
+    const handleStartEmulator = () => {
+        emulationControllerRef.current.sendCommand("PAUSE_TOGGLE")
+        handleClose()
+    }
+
+    const handleGoBack = () => {
+        router.back()
     }
 
     const storeGameFileInDatabase = async (gameDataObject, gameFile) => {
@@ -177,10 +195,18 @@ export default function Emulator ({gameID, platform}) {
             resolveRom(romFilePath) {
                 return `${romFilePath}`
               },
+            onLaunch(emulationController)
+            {
+                console.log("On launch")
+                setTimeout(() => {
+                    emulationController.sendCommand("PAUSE_TOGGLE")
+                }, 10)
+            }
             
           })
         console.log("Just set the emulation controller")
         emulationControllerRef.current = machineConfiguration
+        
     }
 
     const [screenStyle, setScreenStyle] = useState('default');
@@ -188,15 +214,17 @@ export default function Emulator ({gameID, platform}) {
     const [classHeight, setClassHeight] = useState('baseHeight');
 
       useEffect(() => {
-        bootEmulationController();
+        bootEmulationController()
         return () => {
             console.log("WRE ARE EXITING")
-            
-            console.log(emulationControllerRef.current)
-            if (emulationControllerRef.current)
+            if (emulationControllerRef !== null)
             {
-                
-                emulationControllerRef.current.exit()
+                console.log(emulationControllerRef.current)
+                if (emulationControllerRef.current)
+                {
+                    
+                    emulationControllerRef.current.exit()
+                }
             }
           }
       }, [])
@@ -204,7 +232,14 @@ export default function Emulator ({gameID, platform}) {
 
     return (
         <div style={{width: '100%', height: '100%'}}>
-            <ControlBar menuToggle={menuToggle} gameID={gameID} emulationController={emulationControllerRef} handleFullscreen={handleFullScreen} />
+            <Fade in={open}>
+                <Box sx={{width: '100%', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', backgroundColor: 'primary.main', zIndex: 3, position: 'absolute'}}>
+                <Button style={{borderRadius: '15px', textTransform: 'none', padding: '6px 16px 6px 16px'}} onClick={handleStartEmulator} color="secondary" variant="contained">Start emulator</Button>
+                <Button style={{borderRadius: '15px', marginTop: '10px', textTransform: 'none', padding: '6px 16px 6px 16px'}} onClick={handleGoBack} color="secondary" variant="text">Go back</Button>
+                </Box>
+            </Fade>
+            
+            {(open) ? <></> : <ControlBar menuToggle={menuToggle} gameID={gameID} emulationController={emulationControllerRef} handleFullscreen={handleFullScreen} />}
             <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%'}}>
             <canvas className="baseHeight" id="emulator-canvas" style={{...classes[screenStyle]}}></canvas>
             </div>

@@ -39,7 +39,7 @@ const BackupButton = () => {
                 }
             zip.generateAsync({type:"blob"})
 .then(function (blob) {
-    saveAs(blob);
+    saveAs(blob, 'backup.zip');
 })
 
         
@@ -47,7 +47,7 @@ const BackupButton = () => {
 
     return (
         <div>
-            <Tooltip title={"Backup games and saves"}>
+            <Tooltip title={"Backup all your games and saves"}>
             <IconButton onClick={handleZip}>
                 <DownloadingIcon/>
             </IconButton>

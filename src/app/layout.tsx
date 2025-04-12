@@ -18,7 +18,7 @@ import RomProvider from "./RomProvider";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Working Title",
+  title: "AstroEmu",
   description: "Web-based Emulator",
 };
 

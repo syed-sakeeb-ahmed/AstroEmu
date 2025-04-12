@@ -221,11 +221,7 @@ const libraryGameStartNES = async (event) => {
        )}
     </Grid>
     </Box>
-    <div>Lore</div>
-    <div>Lore</div>
-    <div>Lore</div>
-    <div>Lore</div>
-    <div>Lore</div>
+    
     
     </Box>
   );

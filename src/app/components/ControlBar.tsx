@@ -75,7 +75,7 @@ const ControlBar = ({gameID, emulationController, handleFullscreen, menuToggle})
     
 
     return (
-        <div style={{position: 'absolute', left: 0, right: 0, height: '100%', display: 'flex', flexDirection: 'column'}}>
+        <div style={{position: 'absolute', left: 0, right: 0, height: '100%', display: 'flex', flexDirection: 'column', zIndex: 0}}>
             <div style={{position: 'absolute', left: 0, right: 0, height: '80px'}}>
             <Slide in={testChecked}>
             <AppBar>

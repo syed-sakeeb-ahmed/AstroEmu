@@ -14,6 +14,7 @@ import {default as B} from '@mui/material/Button';
 import Link from 'next/link'
 import {useRouter} from 'next/navigation'
 import { RomContext } from './RomContext';
+import { ThemeStateContext } from './ThemeStateContext';
 
 
 
@@ -29,6 +30,8 @@ const SPLASH_ASSETS_DIRECTORY_PATH = "splash_assets"
 
 
 
+
+
 export default function HomePage() {
     const classes = {
         root_box: { /*p: 2, border: '1px dashed grey'*/ },
@@ -37,7 +40,6 @@ export default function HomePage() {
         flex_dcc: {display: 'flex', justifyContent: 'center', alignItems: 'center'}
       };
     
-
 
   return (
     <div style={classes.flex_display}>
@@ -60,17 +62,19 @@ export default function HomePage() {
 
 
   
-  <Box component='section' sx={[classes.root_box, {display: 'flex', flexDirection: 'column', flex: 1}]}>
+  <Box component='section' sx={[classes.root_box, {display: 'flex', flexDirection: 'column', flex: 1, maxWidth: '1279px'}]}>
   <Box
   component="img"
   style={{
-    maxWidth: '100%',
+    width:'100%'
+
   }}
   alt="Gameplay video of the SNES game Nekotako"
-  src={`${SPLASH_ASSETS_DIRECTORY_PATH}/dt_bar.svg`}
+  src={`${SPLASH_ASSETS_DIRECTORY_PATH}/Dark_Theme.svg`}
 />
-<video autoPlay muted loop>
-  <source src={`${SPLASH_ASSETS_DIRECTORY_PATH}/finalClip.mp4`} type="video/mp4"/>
+<video style={{width:'100%'
+    }}autoPlay muted loop>
+  <source src={`${SPLASH_ASSETS_DIRECTORY_PATH}/mp4_splash.mp4`} type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
